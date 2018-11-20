@@ -7,7 +7,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.can.CANStatus;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -120,6 +124,24 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+  }
+
+  @Override
+  public void testInit() {
+    String talonList = "Talons:";
+    for(int i = 0; i < 16; i++){
+      WPI_TalonSRX testTalon = new WPI_TalonSRX(i);
+      
+      int sensorPos = testTalon.getSelectedSensorPosition(0);
+
+      int result = testTalon.setSelectedSensorPosition(sensorPos, 0, 10).value;
+      
+      if(result == 0){
+        talonList+= "\n" + testTalon.getName();
+      }
+
+    }
+    System.out.println(talonList);
   }
 
   /**
